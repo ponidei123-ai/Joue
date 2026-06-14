@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Отладка токена
-BOT_TOKEN = os.getenv('BOT_TOKEN')
+BOT_TOKEN = os.getenv('7880089024:AAFmWOsYNjIH1ca88Cc6mvCjyPl_uf6BEaw')
 logger.info(f"DEBUG: Token found: {BOT_TOKEN is not None}")
 
 if not BOT_TOKEN:
