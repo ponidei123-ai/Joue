@@ -7,18 +7,19 @@ from aiogram.filters import Command
 from aiohttp import TCPConnector
 from aiogram.client.session.aiohttp import AiohttpSession
 
-# Токен из переменных окружения Render
 BOT_TOKEN = os.getenv('7880089024:AAFmWOsYNjIH1ca88Cc6mvCjyPl_uf6BEaw')
 DB_PATH = "victims.db"
 
 logging.basicConfig(level=logging.INFO)
 
 async def main():
-    # Создаем коннектор и сессию правильно
+    # Создаем коннектор
     connector = TCPConnector(force_close=True, enable_cleanup_closed=True)
-    session = AiohttpSession(connector=connector)
     
-    # Передаем сессию при создании бота
+    # Создаем сессию, передавая коннектор через параметр session
+    session = AiohttpSession()
+    session._connector = connector  # Прямое присвоение коннектора для обхода ограничений
+    
     bot = Bot(token=BOT_TOKEN, session=session)
     dp = Dispatcher()
 
@@ -57,7 +58,7 @@ async def main():
         conn.close()
         await message.answer("Данные приняты.")
 
-    print("Бот успешно запущен в облаке!")
+    print("Бот запущен!")
     await dp.start_polling(bot)
 
 if __name__ == '__main__':
