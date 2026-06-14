@@ -7,17 +7,18 @@ from aiogram.filters import Command
 from aiohttp import TCPConnector
 from aiogram.client.session.aiohttp import AiohttpSession
 
-# Токен берется из переменных окружения Render
+# Токен из переменных окружения Render
 BOT_TOKEN = os.getenv('7880089024:AAFmWOsYNjIH1ca88Cc6mvCjyPl_uf6BEaw')
 DB_PATH = "victims.db"
 
 logging.basicConfig(level=logging.INFO)
 
 async def main():
-    # Настройка «тихого» коннектора для стабильной работы в облаке
+    # Создаем коннектор и сессию правильно
     connector = TCPConnector(force_close=True, enable_cleanup_closed=True)
     session = AiohttpSession(connector=connector)
     
+    # Передаем сессию при создании бота
     bot = Bot(token=BOT_TOKEN, session=session)
     dp = Dispatcher()
 
@@ -29,7 +30,6 @@ async def main():
     conn.commit()
     conn.close()
 
-    # Хэндлеры
     @dp.message(Command("start"))
     async def start(message: types.Message):
         kb = types.ReplyKeyboardMarkup(
